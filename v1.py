@@ -12,24 +12,27 @@ def randint(i, v):
 emulate_process = None
 
 def emulate():
-	mouse = MouseController()	# get mouse controller object
-	mouse.position = (0, 0)		# set mouse cursor initial position
-	
-	# start the infinite loop 
-	while True:
-		# mouse cursor movement
-		random_x_mouse_move = randint(1, 10)
-		random_y_mouse_move = randint(1, 10)
-		mouse.move(random_x_mouse_move, random_y_mouse_move)
+	try:
+		mouse = MouseController()	# get mouse controller object
+		mouse.position = (0, 0)		# set mouse cursor initial position
 		
-		# mouse scroll wheel movement
-		random_x_mouse_scroll = randint(-3, 3)
-		random_y_mouse_scroll = randint(-3, 3)
-		mouse.scroll(random_x_mouse_scroll, random_y_mouse_scroll)
-		
-		# pause in-between each movements (in seconds)
-		random_movement_sleep_duration = randint(1, 10)
-		time.sleep(random_movement_sleep_duration)
+		# start the infinite loop 
+		while True:
+			# mouse cursor movement
+			random_x_mouse_move = randint(1, 10)
+			random_y_mouse_move = randint(1, 10)
+			mouse.move(random_x_mouse_move, random_y_mouse_move)
+			
+			# mouse scroll wheel movement
+			random_x_mouse_scroll = randint(-3, 3)
+			random_y_mouse_scroll = randint(-3, 3)
+			mouse.scroll(random_x_mouse_scroll, random_y_mouse_scroll)
+			
+			# pause in-between each movements (in seconds)
+			random_movement_sleep_duration = randint(1, 10)
+			time.sleep(random_movement_sleep_duration)
+	except:
+		print("ERROR: emulating mouse")
 
 def colored(r, g, b, text):
     return f"\033[38;2;{r};{g};{b}m{text}\033[0m"
@@ -52,13 +55,17 @@ def toggle_emulation_state():
 	global emulate_process
 	
 	if emulate_process is None:
-		emulate_process = Process(target = emulate, args = (), daemon = True);	
+		emulate_process = Process(target = emulate, args = (), daemon = True)	
 		emulate_process.start()
 	else:
 		emulate_process.terminate()
 		emulate_process = None
 
 while True:
-	os.system('clear')
-	ui_user_options();
-	toggle_emulation_state();
+	try:
+		os.system('clear')
+		ui_user_options()
+		toggle_emulation_state()
+	except:
+		print("PROGRAM STOPPPED: Exception Occured")
+
